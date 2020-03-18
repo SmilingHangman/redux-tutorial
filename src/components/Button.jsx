@@ -1,26 +1,16 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
 import { random } from 'faker'
+import { useDispatch } from 'react-redux'
+const Button = ({ product, children }) => {
+  const dispatch = useDispatch()
 
-class Button extends Component {
-  render() {
-    return (
-      <button
-        onClick={() =>
-          this.props.changeTestValue({
-            id: random.uuid(),
-            name: this.props.product
-          })
-        }
-      >
-        {this.props.children}
-      </button>
-    )
-  }
+  const addToCartHandler = () =>
+    dispatch({
+      type: 'ADD_TO_CART',
+      payload: { id: random.uuid(), name: product }
+    })
+
+  return <button onClick={addToCartHandler}>{children}</button>
 }
 
-const mapDispatchToProps = {
-  changeTestValue: payload => ({ type: 'ADD_TO_CART', payload })
-}
-
-export default connect(null, mapDispatchToProps)(Button)
+export default Button
